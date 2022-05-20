@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#181818',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '90%',
+    width: '95%',
     borderRadius: 6,
     padding: 10,
     marginTop: StatusBar.currentHeight
