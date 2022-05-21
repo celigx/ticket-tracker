@@ -1,7 +1,12 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, BackHandler } from "react-native";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen }) => {
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+  }, [])
+ 
   const formatDate = () => {
     const date = new Date();
     return dayjs(date).format('DD.MM.YYYY')
@@ -60,6 +65,11 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
 
   const handleAddFunds = () => {
     setHomeScreen(false)
+  }
+
+  const handleBackPress = () => {
+    setHomeScreen(true)
+    return true
   }
 
   return (
