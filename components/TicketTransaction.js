@@ -1,33 +1,6 @@
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    time: '60',
-    date: '18.05.2022',
-    primaryColor: '#DAEFE0',
-    secondaryColor: '#E4F4EB',
-    price: 7
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    time: '30',
-    date: '18.05.2022',
-    primaryColor: '#EFDAE4',
-    secondaryColor: '#F4E4F0',
-    price: 4
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    time: '90',
-    date: '18.05.2022',
-    primaryColor: '#D8E9EF',
-    secondaryColor: '#E4EFF4',
-    price: 10
-  },
-];
-
 const TicketItem = ({ time, date, price, primaryColor, secondaryColor }) => {
   return (
     <View style={[styles.ticket, { backgroundColor: primaryColor }]}>
@@ -56,8 +29,7 @@ const TicketItem = ({ time, date, price, primaryColor, secondaryColor }) => {
   )
 }
 
-const TicketTransation = () => {
-
+const TicketTransation = ({ ticketTransactionList }) => {
   const renderTicket = ({ item }) => {
     return (
       <TicketItem time={item.time} date={item.date} price={item.price} primaryColor={item.primaryColor} secondaryColor={item.secondaryColor}  />
@@ -68,7 +40,7 @@ const TicketTransation = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Lista transakcija</Text>
       <FlatList 
-        data={DATA}
+        data={ticketTransactionList}
         renderItem={renderTicket}
         keyExtractor={ticket => ticket.id}
       />

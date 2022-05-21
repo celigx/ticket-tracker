@@ -8,11 +8,12 @@ import TicketInput from './components/TicketInput';
 
 export default function App() {
   const [balance, setBalance] = useState(100)
+  const [ticketTransactionList, setTicketTransactionList] = useState([])
 
   return (
     <View style={styles.container}>
       <TotalBalance balance={balance} />
-      <TicketTransation />
+      <TicketTransation ticketTransactionList={ticketTransactionList} />
       <TicketInput />
       <StatusBar style="auto" />
     </View>
