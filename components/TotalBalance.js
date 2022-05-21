@@ -1,10 +1,10 @@
 import { StyleSheet, StatusBar, View, Text } from 'react-native';
 
-const TotalBalance = () => {
+const TotalBalance = ({ balance }) => {  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ukupno raspoloživo</Text>
-      <Text style={styles.balance}>200,00 kn</Text>
+      <Text style={styles.balance}>{balance},00 kn</Text>
     </View>
   )
 }
