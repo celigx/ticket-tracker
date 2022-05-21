@@ -1,11 +1,15 @@
-import { StyleSheet, KeyboardAvoidingView, TextInput } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, KeyboardAvoidingView, TextInput, ToastAndroid } from 'react-native';
 
 const AddFunds = ({ funds, setFunds, balance, setBalance, setHomeScreen }) => {  
   const handleInput = () => {
-    setBalance(Number(funds) + balance)
-    setFunds('')
-    setHomeScreen(true)
+    if (funds == funds.match("^[1-9]+[0-9]*$")) {
+      setBalance(Number(funds) + balance)
+      setFunds('')
+      setHomeScreen(true)
+    } else {
+      ToastAndroid.show('Molimo unesite pravilan iznos', ToastAndroid.SHORT);
+      setFunds('');
+    }
   }
 
   return (
