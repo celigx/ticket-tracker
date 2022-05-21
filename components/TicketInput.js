@@ -1,6 +1,11 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import dayjs from "dayjs";
 
 const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList }) => {
+  const formatDate = () => {
+    const date = new Date();
+    return dayjs(date).format('DD.MM.YYYY')
+  }
 
   const handleTicketPrice30 = () => {
     const expense = 4;
@@ -9,7 +14,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
       time: '30',
-      date: '18.05.2022',
+      date: formatDate(),
       primaryColor: '#EFDAE4',
       secondaryColor: '#F4E4F0',
       price: 4
@@ -26,7 +31,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
       time: '60',
-      date: '18.05.2022',
+      date: formatDate(),
       primaryColor: '#DAEFE0',
       secondaryColor: '#E4F4EB',
       price: 7
@@ -43,7 +48,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
       time: '90',
-      date: '18.05.2022',
+      date: formatDate(),
       primaryColor: '#D8E9EF',
       secondaryColor: '#E4EFF4',
       price: 10
