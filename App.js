@@ -5,18 +5,25 @@ import { useState } from 'react';
 import TotalBalance from './components/TotalBalance';
 import TicketTransation from './components/TicketTransaction';
 import TicketInput from './components/TicketInput';
+import AddFunds from './components/AddFunds';
 
 export default function App() {
   const [balance, setBalance] = useState(100)
   const [ticketTransactionList, setTicketTransactionList] = useState([])
+  const [funds, setFunds] = useState('')
+  const [homeScreen, setHomeScreen] = useState(true)
 
   return (
-    <View style={styles.container}>
-      <TotalBalance balance={balance} />
-      <TicketTransation ticketTransactionList={ticketTransactionList} />
-      <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} />
-      <StatusBar style="auto" />
-    </View>
+    homeScreen ? (
+      <View style={styles.container}>
+        <TotalBalance balance={balance} />
+        <TicketTransation ticketTransactionList={ticketTransactionList} />
+        <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} funds={funds} setFunds={setFunds} setHomeScreen={setHomeScreen} />
+        <StatusBar style="auto" />
+      </View>
+    ) : (
+      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} setHomeScreen={setHomeScreen} />
+    )
   );
 }
 

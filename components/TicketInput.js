@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import dayjs from "dayjs";
 
-const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList }) => {
+const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen }) => {
   const formatDate = () => {
     const date = new Date();
     return dayjs(date).format('DD.MM.YYYY')
@@ -58,6 +58,10 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     setBalance(balance - expense)
   }
 
+  const handleAddFunds = () => {
+    setHomeScreen(false)
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topButtonContainer}>
@@ -84,6 +88,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
       <View style={styles.bottomButtonCointainer}>
         <TouchableOpacity
           style={styles.addResourcesButton}
+          onPress={handleAddFunds}
         >
           <Text style={styles.bottomButtonText}>
             Dodaj sredstva
