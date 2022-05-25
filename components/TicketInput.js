@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text, TouchableOpacity, BackHandler } from "react-native";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen }) => {
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress)
+    getData()
   }, [])
  
   const formatDate = () => {
@@ -27,6 +29,10 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
 
     setTicketTransactionList(ticket)
     setBalance(balance - expense)
+
+    // Save to async storage
+    storeBalance(balance - expense)
+    storeTickets(ticket)
   }
 
   const handleTicketPrice60 = () => {
@@ -44,6 +50,10 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
 
     setTicketTransactionList(ticket)
     setBalance(balance - expense)
+
+    // Save to async storage
+    storeBalance(balance - expense)
+    storeTickets(ticket)
   }
 
   const handleTicketPrice90 = () => {
@@ -61,6 +71,10 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
 
     setTicketTransactionList(ticket)
     setBalance(balance - expense)
+
+    // Save to async storage
+    storeBalance(balance - expense)
+    storeTickets(ticket)
   }
 
   const handleAddFunds = () => {
@@ -72,8 +86,54 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     return true
   }
 
+  // Save balance to async storage
+  const storeBalance = async (value) => {
+    try {
+      await AsyncStorage.setItem('@balance', JSON.stringify(value))
+  
+      console.log('storeBalance', value);
+    } catch (e) {
+      console.log('Async storeBalance error', e)
+    }
+  }
+
+  // Save ticket list to async storage
+  const storeTickets = async (value) => {
+    try {
+      await AsyncStorage.setItem('@tickets', JSON.stringify(value))
+  
+      console.log('storeTickets', value);
+    } catch (e) {
+      console.log('Async storeData error', e)
+    }
+  }
+  
+  // Get data from async storage
+  const getData = async () => {
+    try {
+      const getBalance = await AsyncStorage.getItem('@balance')
+      const parseBalance = JSON.parse(getBalance)
+  
+      const getTickets = await AsyncStorage.getItem('@tickets')
+      const parseTickets = JSON.parse(getTickets)
+  
+      if (parseBalance !== null) {
+        setBalance(parseBalance)
+        setTicketTransactionList(parseTickets)
+      } else {
+        setBalance(balance)
+        setTicketTransactionList(setTicketTransactionList)
+      }
+      
+      console.log('getData', parseBalance);
+    } catch(e) {
+      console.log('Async getTickets error', e)
+    }
+  }
+
   return (
     <View style={styles.container}>
+
       <View style={styles.topButtonContainer}>
         <TouchableOpacity
           style={[styles.priceButton, { backgroundColor: "#EFDAE4" }]}
@@ -88,7 +148,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
           <Text style={styles.topButtonText}>7,00 kn</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.priceButton, { backgroundColor: "#DAE9EF" }]}
+          style={[styles.priceButton, { backgroundColor: "#DAE9EF", marginRight: 0 }]}
           onPress={handleTicketPrice90}
         >
           <Text style={styles.topButtonText}>10,00 kn</Text>
@@ -105,6 +165,7 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
           </Text>
         </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -153,7 +214,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "700",
-  },
+  }
 });
 
 export default TicketInput;

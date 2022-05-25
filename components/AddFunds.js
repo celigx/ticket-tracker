@@ -1,4 +1,5 @@
 import { StyleSheet, KeyboardAvoidingView, TextInput, ToastAndroid } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddFunds = ({ funds, setFunds, balance, setBalance, setHomeScreen }) => {  
   const handleInput = () => {
@@ -6,9 +7,23 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, setHomeScreen }) => {
       setBalance(Number(funds) + balance)
       setFunds('')
       setHomeScreen(true)
+
+      // Save to async storage
+      storeBalance(Number(funds) + balance)
     } else {
       ToastAndroid.show('Molimo unesite pravilan iznos', ToastAndroid.SHORT);
       setFunds('');
+    }
+  }
+
+  // Save balance to async storage
+  const storeBalance = async (value) => {
+    try {
+      await AsyncStorage.setItem('@balance', JSON.stringify(value))
+  
+      console.log('storeBalance', value);
+    } catch (e) {
+      console.log('Async storeBalance error', e)
     }
   }
 

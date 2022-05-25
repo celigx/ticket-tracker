@@ -18,7 +18,7 @@ export default function App() {
       <View style={styles.container}>
         <TotalBalance balance={balance} />
         <TicketTransation ticketTransactionList={ticketTransactionList} />
-        <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} funds={funds} setFunds={setFunds} setHomeScreen={setHomeScreen} />
+        <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
         <StatusBar style="auto" />
       </View>
     ) : (
