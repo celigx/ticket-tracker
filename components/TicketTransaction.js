@@ -2,8 +2,31 @@ import { StyleSheet, View, Text, Animated, Dimensions } from 'react-native';
 import { useRef } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { SwipeListView } from 'react-native-swipe-list-view';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const TicketTransaction = ({ ticketTransactionList, setTicketTransactionList }) => {
+
+const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList }) => {
+  // Save balance to async storage
+  const storeBalance = async (value) => {
+    try {
+      await AsyncStorage.setItem('@balance', JSON.stringify(value))
+  
+      console.log('storeBalance', value);
+    } catch (e) {
+      console.log('Async storeBalance error', e)
+    }
+  }
+
+  // Save ticket list to async storage
+  const storeTickets = async (value) => {
+    try {
+      await AsyncStorage.setItem('@tickets', JSON.stringify(value))
+  
+      console.log('storeTickets', value);
+    } catch (e) {
+      console.log('Async storeData error', e)
+    }
+  }
 
   const renderTicket = ({ item }) => {
     return (
@@ -78,8 +101,17 @@ const TicketTransaction = ({ ticketTransactionList, setTicketTransactionList }) 
       }).start(() => {
         const newData = [...ticketTransactionList]
         const prevIndex = ticketTransactionList.findIndex(item => item.id === key)
+        // Get array of ticket prices
+        const price = ticketTransactionList.map(x => x.price)
+
         newData.splice(prevIndex, 1)
+
+        setBalance(balance + price[prevIndex])
         setTicketTransactionList(newData)
+        // Save to async storage
+        storeBalance(balance + price[prevIndex])
+        storeTickets(newData)
+
         animationIsRunning.current = false
       });
     }

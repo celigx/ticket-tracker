@@ -17,7 +17,7 @@ export default function App() {
     homeScreen ? (
       <View style={styles.container}>
         <TotalBalance balance={balance} />
-        <TicketTransaction ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} />
+        <TicketTransaction balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} />
         <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
         <StatusBar style="auto" />
       </View>
