@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 
 import TotalBalance from './components/TotalBalance';
-import TicketTransation from './components/TicketTransaction';
+import TicketTransaction from './components/TicketTransaction';
 import TicketInput from './components/TicketInput';
 import AddFunds from './components/AddFunds';
 
@@ -17,7 +17,7 @@ export default function App() {
     homeScreen ? (
       <View style={styles.container}>
         <TotalBalance balance={balance} />
-        <TicketTransation ticketTransactionList={ticketTransactionList} />
+        <TicketTransaction ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} />
         <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
         <StatusBar style="auto" />
       </View>

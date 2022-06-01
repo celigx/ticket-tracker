@@ -1,49 +1,109 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Animated, Dimensions } from 'react-native';
+import { useRef } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import { SwipeListView } from 'react-native-swipe-list-view';
 
-const TicketItem = ({ time, date, price, primaryColor, secondaryColor }) => {
-  return (
-    <View style={[styles.ticket, { backgroundColor: primaryColor }]}>
+const TicketTransaction = ({ ticketTransactionList, setTicketTransactionList }) => {
 
-      <View style={styles.ticketLeftContainer}>
-        <Text style={styles.logo}>ZET</Text>
-        <Icon 
-          name="barcode"
-          color="#474747"
-          size={44}
-          style={styles.barcode}
-          />
-      </View>
-
-      <View style={styles.ticketMiddleContainer}>
-        <Text style={styles.ticketTitle}>POJEDINAČNA KARTA</Text>
-        <Text style={styles.ticketTime}>{time} MINUTA</Text>
-        <Text style={styles.ticketDate}>{date}</Text>
-      </View>
-
-      <View style={[styles.ticketPriceContainer, { backgroundColor: secondaryColor}]}>
-        <Text style={styles.ticketPriceText}>{price},00 kn</Text>
-      </View>
-
-    </View>
-  )
-}
-
-const TicketTransation = ({ ticketTransactionList }) => {
   const renderTicket = ({ item }) => {
     return (
-      <TicketItem time={item.time} date={item.date} price={item.price} primaryColor={item.primaryColor} secondaryColor={item.secondaryColor}  />
+      <Animated.View
+        style={[
+          styles.ticket,
+          {
+            backgroundColor: item.primaryColor,
+            height: rowTranslateAnimatedValues[item.id].interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 70],
+            }),
+          },
+        ]}
+      >
+        <View style={styles.ticketLeftContainer}>
+          <Text style={styles.logo}>ZET</Text>
+          <Icon
+            name="barcode"
+            color="#474747"
+            size={44}
+            style={styles.barcode}
+          />
+        </View>
+
+        <View style={styles.ticketMiddleContainer}>
+          <Text style={styles.ticketTitle}>POJEDINAČNA KARTA</Text>
+          <Text style={styles.ticketTime}>{item.time} MINUTA</Text>
+          <Text style={styles.ticketDate}>{item.date}</Text>
+        </View>
+
+        <View
+          style={[
+            styles.ticketPriceContainer,
+            { backgroundColor: item.secondaryColor },
+          ]}
+        >
+          <Text style={styles.ticketPriceText}>{item.price},00 kn</Text>
+        </View>
+      </Animated.View>
     );
   };
+
+  // Get ticket id from array
+  const id = ticketTransactionList.map(e => e.id)
+  // Change value in array to new Animated.Value(1)
+  const value = id.map(e => e = new Animated.Value(1))
+    
+  // https://www.geeksforgeeks.org/how-to-create-an-object-from-two-arrays-in-javascript/
+  // Convert two arrays to an object
+  const convertToObj = (id, value) => {
+    let obj = {};
+      
+    id.forEach((e, i) => {obj[e] = value[i]})
+    return obj;
+  }
+
+  const rowTranslateAnimatedValues = convertToObj(id, value)
+
+  const animationIsRunning = useRef(false);
+
+  const onSwipeValueChange = (swipeData) => {
+    const { key, value } = swipeData
+
+    if ( value < -Dimensions.get('window').width && !animationIsRunning.current) {
+      animationIsRunning.current = true;
+
+      Animated.timing(rowTranslateAnimatedValues[key], {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: false,
+      }).start(() => {
+        const newData = [...ticketTransactionList]
+        const prevIndex = ticketTransactionList.findIndex(item => item.id === key)
+        newData.splice(prevIndex, 1)
+        setTicketTransactionList(newData)
+        animationIsRunning.current = false
+      });
+    }
+  }
+
+  const renderHiddenItem = () => (
+    <></>
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista transakcija</Text>
-      <FlatList 
+
+      <SwipeListView
+        disableRightSwipe
         data={ticketTransactionList}
         renderItem={renderTicket}
-        keyExtractor={ticket => ticket.id}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-Dimensions.get('window').width}
+        onSwipeValueChange={onSwipeValueChange}
+        useNativeDriver={false}
+        keyExtractor={item => item.id}
       />
+
     </View>
   )
 }
@@ -106,7 +166,7 @@ const styles = StyleSheet.create({
   },
   ticketPriceContainer: {
     flex: 1,
-    height: '100%', 
+    height: '100%',
     borderTopEndRadius: 6, 
     borderBottomEndRadius: 6, 
     alignItems: 'center', 
@@ -118,4 +178,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TicketTransation;
+export default TicketTransaction;
