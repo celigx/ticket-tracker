@@ -22,7 +22,7 @@ export default function App() {
         <StatusBar style="auto" />
       </View>
     ) : (
-      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} setHomeScreen={setHomeScreen} />
+      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
     )
   );
 }

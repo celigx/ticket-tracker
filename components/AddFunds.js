@@ -1,15 +1,35 @@
 import { StyleSheet, KeyboardAvoidingView, TextInput, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import dayjs from "dayjs";
 
-const AddFunds = ({ funds, setFunds, balance, setBalance, setHomeScreen }) => {  
+const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen }) => {  
+  const formatDate = () => {
+    const date = new Date();
+    return dayjs(date).format('DD.MM.YYYY')
+  }
+
   const handleInput = () => {
     if (funds == funds.match("^[1-9]+[0-9]*$")) {
+      const ticket = ticketTransactionList.slice();
+
+      ticket.unshift({
+        id: Math.random().toString(16).substring(2),
+        time: '0',
+        date: formatDate(),
+        primaryColor: '#E3E4EE',
+        secondaryColor: '#EEEFF9',
+        price: Number(funds),
+        expense: false
+      })
+      
+      setTicketTransactionList(ticket)
       setBalance(Number(funds) + balance)
       setFunds('')
       setHomeScreen(true)
 
       // Save to async storage
       storeBalance(Number(funds) + balance)
+      storeTickets(ticket)
     } else {
       ToastAndroid.show('Molimo unesite pravilan iznos', ToastAndroid.SHORT);
       setFunds('');
@@ -24,6 +44,17 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, setHomeScreen }) => {
       console.log('storeBalance', value);
     } catch (e) {
       console.log('Async storeBalance error', e)
+    }
+  }
+
+  // Save ticket list to async storage
+  const storeTickets = async (value) => {
+    try {
+      await AsyncStorage.setItem('@tickets', JSON.stringify(value))
+  
+      console.log('storeTickets', value);
+    } catch (e) {
+      console.log('Async storeData error', e)
     }
   }
 
