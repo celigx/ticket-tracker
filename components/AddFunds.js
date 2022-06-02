@@ -17,8 +17,8 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList,
         title: 'VRIJEDNOSNA KARTA',
         type: 'NADOPLATA',
         date: formatDate(),
-        primaryColor: '#E3E4EE',
-        secondaryColor: '#EEEFF9',
+        primaryColor: '#BBC2C4',
+        secondaryColor: '#D8DDDF',
         price: Number(funds),
         expense: false
       })
