@@ -39,6 +39,10 @@ const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTick
               inputRange: [0, 1],
               outputRange: [0, 70],
             }),
+            marginVertical: rowTranslateAnimatedValues[item.id].interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 5],
+            }),
           },
         ]}
       >
