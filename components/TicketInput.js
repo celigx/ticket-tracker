@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity, BackHandler } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, BackHandler, ToastAndroid } from "react-native";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,12 +27,17 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
       price: 4
     })
 
-    setTicketTransactionList(ticket)
-    setBalance(balance - expense)
-
-    // Save to async storage
-    storeBalance(balance - expense)
-    storeTickets(ticket)
+    // If balance is lower than expense show toast, else save ticket
+    if (balance < expense) {
+      ToastAndroid.show('Nedovoljan iznos', ToastAndroid.SHORT);
+    } else {
+      setTicketTransactionList(ticket)
+      setBalance(balance - expense)
+      
+      // Save to async storage
+      storeBalance(balance - expense)
+      storeTickets(ticket)
+    }
   }
 
   const handleTicketPrice60 = () => {
@@ -48,12 +53,17 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
       price: 7
     })
 
-    setTicketTransactionList(ticket)
-    setBalance(balance - expense)
-
-    // Save to async storage
-    storeBalance(balance - expense)
-    storeTickets(ticket)
+    // If balance is lower than expense show toast, else save ticket
+    if (balance < expense) {
+      ToastAndroid.show('Nedovoljan iznos', ToastAndroid.SHORT);
+    } else {
+      setTicketTransactionList(ticket)
+      setBalance(balance - expense)
+      
+      // Save to async storage
+      storeBalance(balance - expense)
+      storeTickets(ticket)
+    }
   }
 
   const handleTicketPrice90 = () => {
@@ -69,12 +79,17 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
       price: 10
     })
 
-    setTicketTransactionList(ticket)
-    setBalance(balance - expense)
-
-    // Save to async storage
-    storeBalance(balance - expense)
-    storeTickets(ticket)
+    // If balance is lower than expense show toast, else save ticket
+    if (balance < expense) {
+      ToastAndroid.show('Nedovoljan iznos', ToastAndroid.SHORT);
+    } else {
+      setTicketTransactionList(ticket)
+      setBalance(balance - expense)
+      
+      // Save to async storage
+      storeBalance(balance - expense)
+      storeTickets(ticket)
+    }
   }
 
   const handleAddFunds = () => {
