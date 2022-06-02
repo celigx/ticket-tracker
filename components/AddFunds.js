@@ -14,7 +14,8 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList,
 
       ticket.unshift({
         id: Math.random().toString(16).substring(2),
-        time: '0',
+        title: 'VRIJEDNOSNA KARTA',
+        type: 'NADOPLATA',
         date: formatDate(),
         primaryColor: '#E3E4EE',
         secondaryColor: '#EEEFF9',

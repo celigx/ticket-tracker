@@ -20,11 +20,13 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     const ticket = ticketTransactionList.slice();
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
-      time: '30',
+      title: 'POJEDINAČNA KARTA',
+      type: '30 MINUTA',
       date: formatDate(),
       primaryColor: '#EFDAE4',
       secondaryColor: '#F4E4F0',
-      price: 4
+      price: 4,
+      expense: true
     })
 
     // If balance is lower than expense show toast, else save ticket
@@ -46,11 +48,13 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     const ticket = ticketTransactionList.slice();
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
-      time: '60',
+      title: 'POJEDINAČNA KARTA',
+      type: '60 MINUTA',
       date: formatDate(),
       primaryColor: '#DAEFE0',
       secondaryColor: '#E4F4EB',
-      price: 7
+      price: 7,
+      expense: true
     })
 
     // If balance is lower than expense show toast, else save ticket
@@ -72,11 +76,13 @@ const TicketInput = ({ balance, setBalance, ticketTransactionList, setTicketTran
     const ticket = ticketTransactionList.slice();
     ticket.unshift({
       id: Math.random().toString(16).substring(2),
-      time: '90',
+      title: 'POJEDINAČNA KARTA',
+      type: '90 MINUTA',
       date: formatDate(),
       primaryColor: '#D8E9EF',
       secondaryColor: '#E4EFF4',
-      price: 10
+      price: 10,
+      expense: true
     })
 
     // If balance is lower than expense show toast, else save ticket

@@ -8,7 +8,7 @@ import TicketInput from './components/TicketInput';
 import AddFunds from './components/AddFunds';
 
 export default function App() {
-  const [balance, setBalance] = useState(100)
+  const [balance, setBalance] = useState(0)
   const [ticketTransactionList, setTicketTransactionList] = useState([])
   const [funds, setFunds] = useState('')
   const [homeScreen, setHomeScreen] = useState(true)
