@@ -5,7 +5,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList }) => {
+const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen, setObjId, setEditFunds }) => {
   // Save balance to async storage
   const storeBalance = async (value) => {
     try {
@@ -133,6 +133,18 @@ const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTick
     }
   }
 
+  const onLeftAction = (data) => {
+    const objIndex = ticketTransactionList.findIndex(e => e.id === data)
+
+    if (ticketTransactionList[objIndex].expense === false) {
+      setHomeScreen(false)
+      setObjId(data)
+      setEditFunds(true)
+    } else {
+      null
+    }
+  }
+
   const renderHiddenItem = () => (
     <></>
   );
@@ -142,7 +154,7 @@ const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTick
       <Text style={styles.title}>Lista transakcija</Text>
 
       <SwipeListView
-        disableRightSwipe
+        // disableRightSwipe
         data={ticketTransactionList}
         renderItem={renderTicket}
         renderHiddenItem={renderHiddenItem}
@@ -150,6 +162,8 @@ const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTick
         onSwipeValueChange={onSwipeValueChange}
         useNativeDriver={false}
         keyExtractor={item => item.id}
+        leftActivationValue={150}
+        onLeftAction={onLeftAction}
       />
 
     </View>

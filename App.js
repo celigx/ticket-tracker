@@ -12,17 +12,19 @@ export default function App() {
   const [ticketTransactionList, setTicketTransactionList] = useState([])
   const [funds, setFunds] = useState('')
   const [homeScreen, setHomeScreen] = useState(true)
+  const [objId, setObjId] = useState()
+  const [editFunds, setEditFunds] = useState(false)
 
   return (
     homeScreen ? (
       <View style={styles.container}>
         <TotalBalance balance={balance} />
-        <TicketTransaction balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} />
+        <TicketTransaction balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} setObjId={setObjId} setEditFunds={setEditFunds} />
         <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
         <StatusBar style="auto" />
       </View>
     ) : (
-      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
+      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} objId={objId} editFunds={editFunds} setEditFunds={setEditFunds} />
     )
   );
 }

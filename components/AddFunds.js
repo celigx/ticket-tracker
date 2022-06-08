@@ -2,13 +2,14 @@ import { StyleSheet, KeyboardAvoidingView, TextInput, ToastAndroid } from 'react
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from "dayjs";
 
-const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen }) => {  
+const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen, objId, editFunds, setEditFunds }) => {
+  
   const formatDate = () => {
     const date = new Date();
     return dayjs(date).format('DD.MM.YYYY')
   }
 
-  const handleInput = () => {
+  const handleAddFunds = () => {
     if (funds == funds.match("^[1-9]+[0-9]*$")) {
       const ticket = ticketTransactionList.slice();
 
@@ -36,6 +37,50 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList,
       setFunds('');
     }
   }
+
+  const handleEditFunds = () => {
+    if (funds == funds.match("^[1-9]+[0-9]*$")) {
+      const newData = [...ticketTransactionList]
+      const objIndex = ticketTransactionList.findIndex(e => e.id === objId)
+      
+      newData[objIndex].price = Number(funds)
+
+      // Filter all true expense objects from an array
+      const getExpense = ticketTransactionList.filter(e => e.expense === true)
+      // Get all prices that have expense true
+      const getExpensePrice = getExpense.map(e => e.price)
+      // Sum price
+      const sumExpense = getExpensePrice.reduce((a, b) => a + b)
+      console.log('sumExpense', sumExpense);
+
+      // Filter all false expense objects from an array
+      const getFunds = ticketTransactionList.filter(e => e.expense === false)
+      // Get all prices that have expense false
+      const getFundsPrice = getFunds.map(e => e.price)
+      // Sum price
+      const sumFunds = getFundsPrice.reduce((a, b) => a + b)
+      
+      setFunds('')
+      setBalance(sumFunds - sumExpense)
+
+      storeBalance(sumFunds - sumExpense)
+      storeTickets(newData)
+
+      setHomeScreen(true)
+      setEditFunds(false)
+    } else {
+      ToastAndroid.show('Iznos', ToastAndroid.SHORT);
+      setFunds('');
+    }
+  }
+  console.log('edit', editFunds);
+
+  const prevIndex = ticketTransactionList.findIndex(item => item.id === objId)
+  // Get array of ticket funds
+  const type = ticketTransactionList.map(x => x.expense)
+  console.log('prevIndex', prevIndex);
+  console.log('type', type);
+  console.log('funds', type[prevIndex]);
 
   // Save balance to async storage
   const storeBalance = async (value) => {
@@ -69,7 +114,7 @@ const AddFunds = ({ funds, setFunds, balance, setBalance, ticketTransactionList,
         keyboardType="number-pad"
         returnKeyType="done"
         enablesReturnKeyAutomatically={true}
-        onSubmitEditing={handleInput}
+        onSubmitEditing={editFunds ? handleEditFunds : handleAddFunds}
         autoFocus={true}
       />
     </KeyboardAvoidingView>
