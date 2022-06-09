@@ -3,6 +3,7 @@ import { useRef } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { SwipeListView } from 'react-native-swipe-list-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 
 const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTicketTransactionList, setHomeScreen, setObjId, setEditFunds }) => {
@@ -145,16 +146,38 @@ const TicketTransaction = ({ balance, setBalance, ticketTransactionList, setTick
     }
   }
 
-  const renderHiddenItem = () => (
-    <></>
-  );
+  const renderHiddenItem = ({ item }) => {
+    return (
+      item.expense ? (
+      <View style={[styles.hiddenItemContainer, { justifyContent: 'flex-end' }]}>
+        <MaterialIcons 
+          name='delete-outline'
+          color='#555'
+          size={30}
+        />
+      </View>
+      ) : (
+        <View style={styles.hiddenItemContainer}>
+          <MaterialIcons 
+            name='info-outline'
+            color='#555'
+            size={30}
+          />
+          <MaterialIcons 
+            name='delete-outline'
+            color='#555'
+            size={30}
+          />
+        </View>
+      )
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista transakcija</Text>
 
       <SwipeListView
-        // disableRightSwipe
         data={ticketTransactionList}
         renderItem={renderTicket}
         renderHiddenItem={renderHiddenItem}
@@ -237,6 +260,13 @@ const styles = StyleSheet.create({
   ticketPriceText: {
     fontWeight: '900', 
     fontSize: 16
+  },
+  hiddenItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10
   }
 });
 
