@@ -11,6 +11,7 @@ import { useState } from "react";
 import { ticketInputActions } from "../ticketInput/ticketInputSlice";
 import { ticketTransactionActions } from "../ticketTransactionList/ticketTransactionSlice";
 import { storeBalance, storeTickets } from "../../helper/helpers";
+import { nanoid } from "nanoid/non-secure";
 
 const Funds = () => {
   const [value, setValue] = useState("");
@@ -31,7 +32,7 @@ const Funds = () => {
   const handleAddFunds = () => {
     if (value == value.match("^[1-9]+[0-9]*$")) {
       const ticket = {
-        id: Math.random().toString(16).substring(2),
+        id: nanoid(),
         title: "VRIJEDNOSNA KARTA",
         type: "NADOPLATA",
         date: formatDate(),

@@ -13,6 +13,7 @@ import { ticketInputActions } from "./ticketInputSlice";
 import { balanceActions } from "../balance/balanceSlice";
 import { ticketTransactionActions } from "../ticketTransactionList/ticketTransactionSlice";
 import { storeBalance, storeTickets } from "../../helper/helpers";
+import { nanoid } from "nanoid/non-secure";
 
 const TicketInput = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const TicketInput = () => {
     const expense = 4;
 
     const ticket = {
-      id: Math.random().toString(16).substring(2),
+      id: nanoid(),
       title: "POJEDINAČNA KARTA",
       type: "30 MINUTA",
       date: formatDate(),
@@ -61,7 +62,7 @@ const TicketInput = () => {
     const expense = 7;
 
     const ticket = {
-      id: Math.random().toString(16).substring(2),
+      id: nanoid(),
       title: "POJEDINAČNA KARTA",
       type: "60 MINUTA",
       date: formatDate(),
@@ -88,7 +89,7 @@ const TicketInput = () => {
     const expense = 10;
 
     const ticket = {
-      id: Math.random().toString(16).substring(2),
+      id: nanoid(),
       title: "POJEDINAČNA KARTA",
       type: "90 MINUTA",
       date: formatDate(),
