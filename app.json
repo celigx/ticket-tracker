@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ticket-tracker",
+    "name": "Ticket Tracker",
     "slug": "ticket-tracker",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.celigx.ticket"
     },
     "web": {
       "favicon": "./assets/favicon.png"
