@@ -83,54 +83,6 @@ const TicketTransactionList = () => {
 
   const animationIsRunning = useRef(false);
 
-  // const onSwipeValueChange = (swipeData) => {
-  //   const { key, value } = swipeData;
-
-  //   if (
-  //     value < -Dimensions.get("window").width &&
-  //     !animationIsRunning.current
-  //   ) {
-  //     animationIsRunning.current = true;
-
-  //     Animated.timing(rowTranslateAnimatedValues[key], {
-  //       toValue: 0,
-  //       duration: 250,
-  //       useNativeDriver: false,
-  //     }).start(() => {
-  //       const newData = [...ticketTransactionList];
-  //       const prevIndex = ticketTransactionList.findIndex(
-  //         (item) => item.id === key
-  //       );
-  //       // Get array of ticket prices
-  //       const price = ticketTransactionList.map((x) => x.price);
-  //       // Get array of ticket funds
-  //       const type = ticketTransactionList.map((x) => x.expense);
-
-  //       newData.splice(prevIndex, 1);
-
-  //       // If it was used to fund the balance, on swipe delete remove fund from balance
-  //       if (type[prevIndex] === true) {
-  //         dispatch(balanceActions.addToBalance(price[prevIndex]));
-  //         dispatch(ticketTransactionActions.removeFromList(newData));
-
-  //         // Save to async storage
-  //         storeBalance(balance + price[prevIndex]);
-  //         storeTickets(newData);
-  //         // If it was used as expense, on swipe delete add price back to balance
-  //       } else {
-  //         dispatch(balanceActions.removeFromBalance(price[prevIndex]));
-  //         dispatch(ticketTransactionActions.removeFromList(newData));
-
-  //         // Save to async storage
-  //         storeBalance(balance - price[prevIndex]);
-  //         storeTickets(newData);
-  //       }
-
-  //       animationIsRunning.current = false;
-  //     });
-  //   }
-  // };
-
   const onSwipeValueChange = (swipeData) => {
     const { key, value } = swipeData;
 
