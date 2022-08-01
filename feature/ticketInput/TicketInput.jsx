@@ -8,18 +8,21 @@ import {
 } from "react-native";
 import dayjs from "dayjs";
 import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { ticketInputActions } from "./ticketInputSlice";
+import { balanceActions } from "../balance/balanceSlice";
+import { ticketTransactionActions } from "../ticketTransactionList/ticketTransactionSlice";
+import { storeBalance, storeTickets } from "../../helper/helpers";
 
-const TicketInput = ({
-  balance,
-  setBalance,
-  ticketTransactionList,
-  setTicketTransactionList,
-  setHomeScreen,
-}) => {
+const TicketInput = () => {
+  const dispatch = useDispatch();
+  const balance = useSelector((state) => state.balance.value);
+  const ticketTransactionList = useSelector(
+    (state) => state.ticketTransactionList.ticketList
+  );
+
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", handleBackPress);
-    // getData()
   }, []);
 
   const formatDate = () => {
@@ -30,8 +33,7 @@ const TicketInput = ({
   const handleTicketPrice30 = () => {
     const expense = 4;
 
-    const ticket = ticketTransactionList.slice();
-    ticket.unshift({
+    const ticket = {
       id: Math.random().toString(16).substring(2),
       title: "POJEDINAČNA KARTA",
       type: "30 MINUTA",
@@ -40,26 +42,25 @@ const TicketInput = ({
       secondaryColor: "#F4E4F0",
       price: 4,
       expense: true,
-    });
+    };
 
     // If balance is lower than expense show toast, else save ticket
     if (balance < expense) {
       ToastAndroid.show("Nedovoljan iznos", ToastAndroid.SHORT);
     } else {
-      setTicketTransactionList(ticket);
-      setBalance(balance - expense);
+      dispatch(ticketTransactionActions.addToList(ticket));
+      dispatch(balanceActions.removeFromBalance(expense));
 
       // Save to async storage
       storeBalance(balance - expense);
-      storeTickets(ticket);
+      storeTickets([ticket, ...ticketTransactionList]);
     }
   };
 
   const handleTicketPrice60 = () => {
     const expense = 7;
 
-    const ticket = ticketTransactionList.slice();
-    ticket.unshift({
+    const ticket = {
       id: Math.random().toString(16).substring(2),
       title: "POJEDINAČNA KARTA",
       type: "60 MINUTA",
@@ -68,26 +69,25 @@ const TicketInput = ({
       secondaryColor: "#E4F4EB",
       price: 7,
       expense: true,
-    });
+    };
 
     // If balance is lower than expense show toast, else save ticket
     if (balance < expense) {
       ToastAndroid.show("Nedovoljan iznos", ToastAndroid.SHORT);
     } else {
-      setTicketTransactionList(ticket);
-      setBalance(balance - expense);
+      dispatch(ticketTransactionActions.addToList(ticket));
+      dispatch(balanceActions.removeFromBalance(expense));
 
       // Save to async storage
       storeBalance(balance - expense);
-      storeTickets(ticket);
+      storeTickets([ticket, ...ticketTransactionList]);
     }
   };
 
   const handleTicketPrice90 = () => {
     const expense = 10;
 
-    const ticket = ticketTransactionList.slice();
-    ticket.unshift({
+    const ticket = {
       id: Math.random().toString(16).substring(2),
       title: "POJEDINAČNA KARTA",
       type: "90 MINUTA",
@@ -96,73 +96,28 @@ const TicketInput = ({
       secondaryColor: "#E4EFF4",
       price: 10,
       expense: true,
-    });
+    };
 
     // If balance is lower than expense show toast, else save ticket
     if (balance < expense) {
       ToastAndroid.show("Nedovoljan iznos", ToastAndroid.SHORT);
     } else {
-      setTicketTransactionList(ticket);
-      setBalance(balance - expense);
+      dispatch(ticketTransactionActions.addToList(ticket));
+      dispatch(balanceActions.removeFromBalance(expense));
 
       // Save to async storage
       storeBalance(balance - expense);
-      storeTickets(ticket);
+      storeTickets([ticket, ...ticketTransactionList]);
     }
   };
 
   const handleAddFunds = () => {
-    // setHomeScreen(false);
+    dispatch(ticketInputActions.homeScreen(false));
   };
 
   const handleBackPress = () => {
-    // setHomeScreen(true);
+    dispatch(ticketInputActions.homeScreen(true));
     return true;
-  };
-
-  // Save balance to async storage
-  const storeBalance = async (value) => {
-    try {
-      await AsyncStorage.setItem("@balance", JSON.stringify(value));
-
-      console.log("storeBalance", value);
-    } catch (e) {
-      console.log("Async storeBalance error", e);
-    }
-  };
-
-  // Save ticket list to async storage
-  const storeTickets = async (value) => {
-    try {
-      await AsyncStorage.setItem("@tickets", JSON.stringify(value));
-
-      console.log("storeTickets", value);
-    } catch (e) {
-      console.log("Async storeData error", e);
-    }
-  };
-
-  // Get data from async storage
-  const getData = async () => {
-    try {
-      const getBalance = await AsyncStorage.getItem("@balance");
-      const parseBalance = JSON.parse(getBalance);
-
-      const getTickets = await AsyncStorage.getItem("@tickets");
-      const parseTickets = JSON.parse(getTickets);
-
-      if (parseBalance !== null) {
-        setBalance(parseBalance);
-        setTicketTransactionList(parseTickets);
-      } else {
-        setBalance(balance);
-        setTicketTransactionList(setTicketTransactionList);
-      }
-
-      console.log("getData", parseBalance);
-    } catch (e) {
-      console.log("Async getTickets error", e);
-    }
   };
 
   return (

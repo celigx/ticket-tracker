@@ -1,40 +1,73 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import TotalBalance from './components/TotalBalance';
-import TicketTransaction from './components/TicketTransaction';
-import TicketInput from './components/TicketInput';
-import AddFunds from './components/AddFunds';
+import Balance from "./feature/balance/Balance";
+import Funds from "./feature/funds/Funds";
+import TicketTransactionList from "./feature/ticketTransactionList/TicketTransactionList";
+import TicketInput from "./feature/ticketInput/TicketInput";
+
+import { balanceActions } from "./feature/balance/balanceSlice";
+import { ticketTransactionActions } from "./feature/ticketTransactionList/ticketTransactionSlice";
 
 export default function App() {
-  const [balance, setBalance] = useState(0)
-  const [ticketTransactionList, setTicketTransactionList] = useState([])
-  const [funds, setFunds] = useState('')
-  const [homeScreen, setHomeScreen] = useState(true)
-  const [objId, setObjId] = useState()
-  const [editFunds, setEditFunds] = useState(false)
+  const dispatch = useDispatch();
 
-  return (
-    homeScreen ? (
-      <View style={styles.container}>
-        <TotalBalance balance={balance} />
-        <TicketTransaction balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} setObjId={setObjId} setEditFunds={setEditFunds} />
-        <TicketInput balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} />
-        <StatusBar style="auto" />
-      </View>
-    ) : (
-      <AddFunds funds={funds} setFunds={setFunds} balance={balance} setBalance={setBalance} ticketTransactionList={ticketTransactionList} setTicketTransactionList={setTicketTransactionList} setHomeScreen={setHomeScreen} objId={objId} editFunds={editFunds} setEditFunds={setEditFunds} />
-    )
+  const homeScreen = useSelector((state) => state.ticketInput.homeScreen);
+  const balance = useSelector((state) => state.balance.value);
+  const ticketTransactionList = useSelector(
+    (state) => state.ticketTransactionList.ticketList
+  );
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // Get data from async storage
+  const getData = async () => {
+    try {
+      const getBalance = await AsyncStorage.getItem("@balance");
+      const parseBalance = JSON.parse(getBalance);
+
+      const getTickets = await AsyncStorage.getItem("@tickets");
+      const parseTickets = JSON.parse(getTickets);
+
+      if (parseBalance !== null) {
+        dispatch(balanceActions.editBalance(parseBalance));
+        dispatch(ticketTransactionActions.getList(parseTickets));
+      } else {
+        dispatch(balanceActions.editBalance(balance));
+        dispatch(ticketTransactionActions.getList(ticketTransactionList));
+      }
+      // console.log("getData", parseTickets);
+    } catch (e) {
+      console.log("Async getTickets error", e);
+    }
+  };
+
+  return homeScreen ? (
+    <View style={styles.container}>
+      <Balance />
+      <TicketTransactionList />
+      <TicketInput />
+      <StatusBar style="dark" />
+    </View>
+  ) : (
+    <View style={[styles.container, { paddingVertical: 0 }]}>
+      <Funds />
+      <StatusBar style="dark" />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEBEB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10
+    backgroundColor: "#EBEBEB",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
   },
 });
