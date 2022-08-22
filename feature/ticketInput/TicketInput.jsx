@@ -9,13 +9,12 @@ import {
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ticketInputActions } from "./ticketInputSlice";
 import { balanceActions } from "../balance/balanceSlice";
 import { ticketTransactionActions } from "../ticketTransactionList/ticketTransactionSlice";
 import { storeBalance, storeTickets } from "../../helper/helpers";
 import { nanoid } from "nanoid/non-secure";
 
-const TicketInput = () => {
+const TicketInput = ({ navigation }) => {
   const dispatch = useDispatch();
   const balance = useSelector((state) => state.balance.value);
   const ticketTransactionList = useSelector(
@@ -113,11 +112,11 @@ const TicketInput = () => {
   };
 
   const handleAddFunds = () => {
-    dispatch(ticketInputActions.homeScreen(false));
+    navigation.navigate("AddFunds");
   };
 
   const handleBackPress = () => {
-    dispatch(ticketInputActions.homeScreen(true));
+    navigation.goBack("HomeScreen");
     return true;
   };
 

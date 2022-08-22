@@ -6,10 +6,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { ticketTransactionActions } from "./ticketTransactionSlice";
 import { balanceActions } from "../balance/balanceSlice";
-import { ticketInputActions } from "../ticketInput/ticketInputSlice";
 import { storeBalance, storeTickets } from "../../helper/helpers";
 
-const TicketTransactionList = () => {
+const TicketTransactionList = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const ticketTransactionList = useSelector(
@@ -137,9 +136,8 @@ const TicketTransactionList = () => {
     const objIndex = ticketTransactionList.findIndex((el) => el.id === data);
 
     if (ticketTransactionList[objIndex].expense === false) {
-      dispatch(ticketInputActions.homeScreen(false));
       dispatch(ticketTransactionActions.setObjId(data));
-      dispatch(ticketInputActions.editScreen(true));
+      navigation.navigate("EditFunds");
     }
   };
 

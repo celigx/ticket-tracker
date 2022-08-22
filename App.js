@@ -1,21 +1,20 @@
 import { useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import Balance from "./feature/balance/Balance";
-import Funds from "./feature/funds/Funds";
-import TicketTransactionList from "./feature/ticketTransactionList/TicketTransactionList";
-import TicketInput from "./feature/ticketInput/TicketInput";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { balanceActions } from "./feature/balance/balanceSlice";
 import { ticketTransactionActions } from "./feature/ticketTransactionList/ticketTransactionSlice";
 
+import HomeScreen from "./screens/HomeScreen";
+import AddFundsScreen from "./screens/AddFundsScreen";
+import EditFundsScreen from "./screens/EditFundsScreen";
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const dispatch = useDispatch();
 
-  const homeScreen = useSelector((state) => state.ticketInput.homeScreen);
   const balance = useSelector((state) => state.balance.value);
   const ticketTransactionList = useSelector(
     (state) => state.ticketTransactionList.ticketList
@@ -47,27 +46,13 @@ export default function App() {
     }
   };
 
-  return homeScreen ? (
-    <View style={styles.container}>
-      <Balance />
-      <TicketTransactionList />
-      <TicketInput />
-      <StatusBar style="dark" />
-    </View>
-  ) : (
-    <View style={[styles.container, { paddingVertical: 0 }]}>
-      <Funds />
-      <StatusBar style="dark" />
-    </View>
+  return (
+    <>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="AddFunds" component={AddFundsScreen} />
+        <Stack.Screen name="EditFunds" component={EditFundsScreen} />
+      </Stack.Navigator>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#EBEBEB",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-  },
-});
