@@ -1,5 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Save onboarding list to async storage
+export const storeOnboarding = async (value) => {
+  try {
+    await AsyncStorage.setItem("@onboarding", JSON.stringify(value));
+
+    console.log("storeOnboarding", value);
+  } catch (e) {
+    console.log("Async storeData error", e);
+  }
+};
+
 // Save balance to async storage
 export const storeBalance = async (value) => {
   try {
@@ -21,3 +32,14 @@ export const storeTickets = async (value) => {
     console.log("Async storeData error", e);
   }
 };
+
+// // Save onboarding list to async storage
+// export const storeOnboarding = async (value) => {
+//   try {
+//     await AsyncStorage.setItem("@onboarding", JSON.stringify(value));
+
+//     console.log("storeOnboarding", value);
+//   } catch (e) {
+//     console.log("Async storeData error", e);
+//   }
+// };
