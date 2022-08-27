@@ -53,7 +53,12 @@ export default function App() {
         dispatch(ticketTransactionActions.getList(ticketTransactionList));
       }
 
-      dispatch(onboardingActions.showOnboarding(parseOnboarding));
+      if (parseOnboarding !== null) {
+        dispatch(onboardingActions.showOnboarding(parseOnboarding));
+      } else {
+        dispatch(onboardingActions.showOnboarding(onboarding));
+      }
+
       setAppIsReady(true);
     } catch (e) {
       console.log("Async getTickets error", e);
