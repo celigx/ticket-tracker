@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { useEffect, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,7 +12,9 @@ import HomeScreen from "./screens/HomeScreen";
 import AddFundsScreen from "./screens/AddFundsScreen";
 import EditFundsScreen from "./screens/EditFundsScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
+
 const Stack = createNativeStackNavigator();
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -70,12 +71,11 @@ export default function App() {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {onboarding ? (
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-      ) : (
-        <></>
-      )}
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={onboarding ? "Onboarding" : "Home"}
+    >
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="AddFunds" component={AddFundsScreen} />
       <Stack.Screen name="EditFunds" component={EditFundsScreen} />
