@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { nanoid } from "nanoid/non-secure";
 import { useDispatch } from "react-redux";
@@ -69,18 +70,24 @@ const OnboardingScreen = ({ navigation }) => {
   };
 
   return (
-    <AppIntroSlider
-      data={slides}
-      renderItem={renderItem}
-      activeDotStyle={{ backgroundColor: "#3F3D56" }}
-      onDone={onDone}
-      showNextButton={false}
-      renderDoneButton={renderDoneButton}
-    />
+    <View style={styles.container}>
+      <AppIntroSlider
+        data={slides}
+        renderItem={renderItem}
+        activeDotStyle={{ backgroundColor: "#3F3D56" }}
+        onDone={onDone}
+        showNextButton={false}
+        renderDoneButton={renderDoneButton}
+      />
+      <StatusBar style="dark" />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   slide: {
     flex: 1,
     alignItems: "center",
